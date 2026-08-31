@@ -1,3 +1,5 @@
+package semana03.laboratorio03
+
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -9,7 +11,7 @@ fun main() {
     print("Ingrese el título del libro: ")
     val titulo = readln()
 
-    print("Ingrese el tipo de usuario (Alumno / Profesor): ")
+    print("Ingrese el tipo de usuario (Alumno / Docente): ")
     val tipoUsuario = readln()
 
     print("Ingrese la fecha de préstamo (dd/MM/yyyy): ")
@@ -34,7 +36,7 @@ fun main() {
     println("Estado           : ${prestamo.obtenerEstado()}")
     println("==================================================")
 
-    al diasRetraso = prestamo.obtenerDiasRetraso()
+    val diasRetraso = prestamo.obtenerDiasRetraso()
 
     if (diasRetraso > 0) {
         println("\n--- DETALLE DE MULTAS POR DÍA ---")
@@ -42,7 +44,7 @@ fun main() {
         println("--------------------------------------------------")
 
         var acumulado = 0.0
-        var fechaCorriente = prestamo.fechaEntregaEsperada.plusDays(1)
+        var fechaCorriente = prestamo.fechaEntrega.plusDays(1)
 
         for (i in 1..diasRetraso) {
             val multaDia = prestamo.tarifaPorDia
@@ -63,5 +65,4 @@ fun main() {
     } else {
         println("\n¡El libro fue devuelto a tiempo! No aplica multa. Total: S/ 0.00")
     }
- }
 }
