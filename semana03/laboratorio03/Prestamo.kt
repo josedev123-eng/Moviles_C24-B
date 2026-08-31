@@ -5,17 +5,17 @@ class Prestamo(
     val tituloLibro: String,
     val tipoUsuario: String,
     val fechaPrestamo: LocalDate,
-    val fechaEntregaEsperada: LocalDate,
-    val fechaDevolucionReal: LocalDate
+    val fechaEntrega: LocalDate,
+    val fechaDevolucion: LocalDate
 ) {
     val tarifaPorDia: Double = when (tipoUsuario.lowercase()) {
         "docente" -> 3.0
         "alumno" -> 1.50
-        else -> 0
+        else -> 0.00
     }
 
     fun obtenerDiasRetraso(): Long {
-        val dias = java.time.temporal.ChronoUnit.DAYS.between(fechaEntregaEsperada, fechaDevolucionReal)
+        val dias = java.time.temporal.ChronoUnit.DAYS.between(fechaEntrega, fechaDevolucion)
         return if (dias > 0) dias else 0
     }
 
