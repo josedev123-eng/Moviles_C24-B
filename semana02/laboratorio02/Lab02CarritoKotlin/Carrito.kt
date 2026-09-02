@@ -42,6 +42,10 @@ fun calcularDescuento(total: Double): Double {
     }
 }
 
+fun buscarProducto(productos: List<Producto>, nombre: String): Producto? {
+    return productos.find { it.nombre.equals(nombre, ignoreCase = true) }
+}
+
 fun main() {
     println("=========================================")
     println(" CARRITO DE COMPRAS- TIENDA TECSUP ")
@@ -86,7 +90,32 @@ fun main() {
     }
 
     println(String.format("%-20s : S/ %7.2f", "TOTAL CON DESCUENTO", total - descuento))
-    println()
+
+    val nombreBusqueda = "Mouse Logitech"
+    val encontrado = buscarProducto(carrito, nombreBusqueda)
+    if (encontrado != null) {
+        println("Producto encontrado: ${encontrado.nombre} - S/ ${encontrado.precio}")
+    } else {
+        println("Producto '$nombreBusqueda' no encontrado.")
+    }
+
+    val productoAEliminar = "Mouse Logitech"
+    val eliminado = carrito.removeIf { it.nombre.equals(productoAEliminar, ignoreCase = true) }
+
+    if (eliminado) {
+        println("Se elimino '$productoAEliminar' del carrito.\n")
+
+        println("--- CARRITO ACTUALIZADO ---")
+        mostrarDetalle(carrito)
+
+        val subtotalAct = calcularSubtotal(carrito)
+        val igvAct = calcularIGV(subtotalAct)
+        val totalAct = calcularTotal(subtotalAct, igvAct)
+
+        println("Cantidad de productos : ${carrito.size}")
+        println(String.format("%-20s : S/ %7.2f", "TOTAL ACTUALIZADO", totalAct))
+    }
+
     println("Gracias por su compra, $nombreCliente!")
 
 }
