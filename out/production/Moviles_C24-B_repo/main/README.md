@@ -1,1 +1,0 @@
-# Semana 02 - Teoria
