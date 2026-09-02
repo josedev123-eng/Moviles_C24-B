@@ -33,6 +33,10 @@ class CarritoCompras(val cliente: String) {
         }
     }
 
+    fun buscarProducto(nombre: String): Producto? {
+        return productos.find { it.nombre.equals(nombre, ignoreCase = true) }
+    }
+
     fun obtenerProductoMasCaro(): Producto? = productos.maxByOrNull { it.precio }
 
     fun mostrarDetalle() {
