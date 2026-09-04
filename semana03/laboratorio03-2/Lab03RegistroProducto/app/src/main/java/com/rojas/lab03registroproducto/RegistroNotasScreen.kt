@@ -83,4 +83,50 @@ fun ItemCurso(
         }
     }
 }
+@Composable
+fun RegistroNotasScreen() {
+    val cursos = remember {
+        mutableStateListOf(
+            Pair("Programacion en Moviles", ""),
+            Pair("Programación Orientada a Objetos", ""),
+            Pair("Fundamentos de Progrmacion", ""),
+            Pair("Base de Datos", "")
+        )
+    }
 
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(LightBackgroundStart, LightBackgroundEnd)
+                )
+            )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text(
+                text = "Registro de Notas",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                color = DarkPurple,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+
+            cursos.forEachIndexed { index, curso ->
+                ItemCurso(
+                    nombreCurso = curso.first,
+                    nota = curso.second,
+                    onNotaChange = { nuevaNota ->
+                        cursos[index] = curso.copy(second = nuevaNota)
+                    }
+                )
+            }
+        }
+    }
+}
