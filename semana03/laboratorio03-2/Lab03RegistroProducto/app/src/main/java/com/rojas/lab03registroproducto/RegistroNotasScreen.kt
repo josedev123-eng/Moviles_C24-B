@@ -34,53 +34,60 @@ val Amber = Color(0xFFFFB300)
 val Red = Color(0xFFE53935)
 
 @Composable
-fun ItemCurso(
+fun ItemCursoSlider(
     nombreCurso: String,
-    nota: String,
-    onNotaChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    porcentaje: Int,
+    nota: Float,
+    onNotaChange: (Float) -> Unit
 ) {
-    Card(
-        modifier = modifier
+    Column(
+        modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = CardBackground
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
-        )
+            .padding(vertical = 4.dp)
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = nombreCurso,
-                style = MaterialTheme.typography.titleMedium,
-                color = TextPrimary,
-                modifier = Modifier.weight(1f)
-            )
-
-            OutlinedTextField(
-                value = nota,
-                onValueChange = onNotaChange,
-                label = { Text("Nota") },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number
-                ),
-                modifier = Modifier.width(100.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = PrimaryBlue,
-                    unfocusedBorderColor = TextSecondary,
-                    focusedLabelColor = PrimaryBlue
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = nombreCurso,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = TextPrimary
                 )
-            )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = "($porcentaje%)",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = DarkPurple.copy(alpha = 0.7f)
+                )
+            }
+            Surface(
+                color = BadgeBgColor,
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text(
+                    text = "${nota.roundToInt()}",
+                    color = DarkPurple,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 2.dp)
+                )
+            }
         }
+
+        Slider(
+            value = nota,
+            onValueChange = onNotaChange,
+            valueRange = 0f..20f,
+            steps = 19,
+            colors = SliderDefaults.colors(
+                thumbColor = DarkPurple,
+                activeTrackColor = DarkPurple,
+                inactiveTrackColor = LightBackgroundStart
+            )
+        )
     }
 }
 @Composable
@@ -92,6 +99,18 @@ fun RegistroNotasScreen() {
             Pair("Fundamentos de Progrmacion", ""),
             Pair("Base de Datos", "")
         )
+    }
+
+    val notasIngresadas = cursos.mapNotNull { it.second.toFloatOrNull() }
+    val promedioCalculado = if (notasIngresadas.isNotEmpty()) notasIngresadas.average() else 0.0
+    val promedioRedondeado = (promedioCalculado * 100).roundToInt() / 100.0
+
+    val (estadoTexto, estadoColor) = when {
+        notasIngresadas.isEmpty() -> "Sin notas" to TextSecondary
+        promedioCalculado >= 18 -> "Excelente" to GreenDark
+        promedioCalculado >= 13 -> "Aprobado" to PrimaryBlue
+        promedioCalculado >= 10 -> "En Recuperación" to Amber
+        else -> "Desaprobado" to Red
     }
 
     Box(
@@ -126,6 +145,49 @@ fun RegistroNotasScreen() {
                         cursos[index] = curso.copy(second = nuevaNota)
                     }
                 )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = BadgeBgColor),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(20.dp)
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "PROMEDIO GENERAL",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = TextSecondary,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Text(
+                        text = if (notasIngresadas.isNotEmpty()) "$promedioRedondeado" else "--",
+                        fontSize = 36.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = DarkPurple
+                    )
+
+                    Surface(
+                        color = estadoColor.copy(alpha = 0.15f),
+                        shape = RoundedCornerShape(20.dp)
+                    ) {
+                        Text(
+                            text = estadoTexto,
+                            color = estadoColor,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+                        )
+                    }
+                }
             }
         }
     }
