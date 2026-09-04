@@ -92,26 +92,18 @@ fun ItemCursoSlider(
 }
 @Composable
 fun RegistroNotasScreen() {
-    val cursos = remember {
-        mutableStateListOf(
-            Pair("Programacion en Moviles", ""),
-            Pair("Programación Orientada a Objetos", ""),
-            Pair("Fundamentos de Progrmacion", ""),
-            Pair("Base de Datos", "")
-        )
-    }
+    var nota1 by rememberSaveable { mutableFloatStateOf(0f) }
+    var nota2 by rememberSaveable { mutableFloatStateOf(0f) }
+    var nota3 by rememberSaveable { mutableFloatStateOf(0f) }
+    var nota4 by rememberSaveable { mutableFloatStateOf(0f) }
 
-    val notasIngresadas = cursos.mapNotNull { it.second.toFloatOrNull() }
-    val promedioCalculado = if (notasIngresadas.isNotEmpty()) notasIngresadas.average() else 0.0
-    val promedioRedondeado = (promedioCalculado * 100).roundToInt() / 100.0
+    var redondear by rememberSaveable { mutableStateOf(false) }
+    var confirmado by rememberSaveable { mutableStateOf(false) }
+    var calculado by rememberSaveable { mutableStateOf(false) }
 
-    val (estadoTexto, estadoColor) = when {
-        notasIngresadas.isEmpty() -> "Sin notas" to TextSecondary
-        promedioCalculado >= 18 -> "Excelente" to GreenDark
-        promedioCalculado >= 13 -> "Aprobado" to PrimaryBlue
-        promedioCalculado >= 10 -> "En Recuperación" to Amber
-        else -> "Desaprobado" to Red
-    }
+    var promedioPonderado by rememberSaveable { mutableDoubleStateOf(0.0) }
+    var promedioFinalStr by rememberSaveable { mutableStateOf("") }
+    var estadoTexto by rememberSaveable { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -134,61 +126,140 @@ fun RegistroNotasScreen() {
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 color = DarkPurple,
-                modifier = Modifier.padding(vertical = 8.dp)
+                modifier = Modifier.padding(vertical = 4.dp)
             )
 
-            cursos.forEachIndexed { index, curso ->
-                ItemCurso(
-                    nombreCurso = curso.first,
-                    nota = curso.second,
-                    onNotaChange = { nuevaNota ->
-                        cursos[index] = curso.copy(second = nuevaNota)
-                    }
+            Text(
+                text = "Notas del ciclo",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "Desliza para asignar cada nota (0 a 20)",
+                style = MaterialTheme.typography.bodySmall,
+                color = TextSecondary
+            )
+
+            ItemCursoSlider("Fundamentos de Programación", 20, nota1) { nota1 = it }
+            ItemCursoSlider("Programación Orientada a Objetos", 25, nota2) { nota2 = it }
+            ItemCursoSlider("Programación en Móviles", 30, nota3) { nota3 = it }
+            ItemCursoSlider("Base de Datos", 25, nota4) { nota4 = it }
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("Redondear promedio final", style = MaterialTheme.typography.bodyMedium)
+                Switch(
+                    checked = redondear,
+                    onCheckedChange = { redondear = it },
+                    colors = SwitchDefaults.colors(checkedTrackColor = DarkPurple)
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(
+                    checked = confirmado,
+                    onCheckedChange = { confirmado = it },
+                    colors = CheckboxDefaults.colors(checkedColor = DarkPurple)
+                )
+                Text("Confirmo que las notas son correctas", style = MaterialTheme.typography.bodyMedium)
+            }
 
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = BadgeBgColor),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            Button(
+                onClick = {
+                    promedioPonderado = (nota1 * 0.20) + (nota2 * 0.25) + (nota3 * 0.30) + (nota4 * 0.25)
+                    val finalVal = if (redondear) promedioPonderado.roundToInt().toDouble() else promedioPonderado
+
+                    promedioFinalStr = if (redondear) "${finalVal.toInt()}" else String.format("%.2f", finalVal)
+                    estadoTexto = if (finalVal >= 13) "APROBADO" else "DESAPROBADO"
+                    calculado = true
+                },
+                enabled = confirmado,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = DarkPurple,
+                    disabledContainerColor = Color(0xFFBBB3D7)
+                ),
+                shape = RoundedCornerShape(24.dp)
             ) {
-                Column(
-                    modifier = Modifier
-                        .padding(20.dp)
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                Text("CALCULAR PROMEDIO", fontWeight = FontWeight.Bold)
+            }
+
+            if (calculado) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = CardBackground),
+                    shape = RoundedCornerShape(12.dp)
                 ) {
-                    Text(
-                        text = "PROMEDIO GENERAL",
-                        style = MaterialTheme.typography.labelLarge,
-                        color = TextSecondary,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    Text(
-                        text = if (notasIngresadas.isNotEmpty()) "$promedioRedondeado" else "--",
-                        fontSize = 36.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = DarkPurple
-                    )
-
-                    Surface(
-                        color = estadoColor.copy(alpha = 0.15f),
-                        shape = RoundedCornerShape(20.dp)
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
                         Text(
-                            text = estadoTexto,
-                            color = estadoColor,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+                            text = "Promedio ponderado: ${String.format("%.2f", promedioPonderado)}",
+                            color = TextSecondary,
+                            style = MaterialTheme.typography.bodyMedium
                         )
+                        Row(verticalAlignment = Alignment.Bottom) {
+                            Text(
+                                text = "Promedio final: ",
+                                fontWeight = FontWeight.Bold,
+                                color = DarkPurple
+                            )
+                            Text(
+                                text = promedioFinalStr,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = DarkPurple
+                            )
+                        }
+                        if (redondear) {
+                            Text("(redondeado)", fontSize = 11.sp, color = TextSecondary)
+                        }
+
+                        Surface(
+                            color = if (estadoTexto == "APROBADO") Color(0xFFD4EDDA) else Color(0xFFFFCDD2),
+                            shape = RoundedCornerShape(16.dp),
+                            modifier = Modifier.padding(top = 4.dp)
+                        ) {
+                            Text(
+                                text = estadoTexto,
+                                color = if (estadoTexto == "APROBADO") GreenDark else Red,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 12.sp,
+                                modifier = Modifier.padding(horizontal = 14.dp, vertical = 4.dp)
+                            )
+                        }
                     }
                 }
+                Text(
+                    text = "✓ Promedio calculado correctamente",
+                    color = GreenDark,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+            } else {
+                Text(
+                    text = "Asigna las notas y confirma para calcular",
+                    fontSize = 12.sp,
+                    color = TextSecondary,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
             }
+
+            Text(
+                text = "Desarrollado por: Jose Rojas Condor",
+                fontSize = 11.sp,
+                color = TextSecondary,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
         }
     }
 }
