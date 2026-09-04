@@ -205,7 +205,7 @@ fun RegistroNotasScreen() {
                 ),
                 shape = RoundedCornerShape(24.dp)
             ) {
-                Text("CALCULAR PROMEDIO", fontWeight = FontWeight.Bold)
+                Text("CALCULAR PROMEDIO", fontWeight = FontWeight.Bold, color = Color.White)
             }
 
             OutlinedButton(
@@ -293,7 +293,7 @@ fun RegistroNotasScreen() {
             Text(
                 text = "Desarrollado por: Jose Rojas Condor",
                 fontSize = 11.sp,
-                color = TextSecondary,
+                color = Color.Green,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
         }
