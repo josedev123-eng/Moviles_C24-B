@@ -32,6 +32,8 @@ val CardBackground = Color(0xFFFFFFFF)
 val GreenDark = Color(0xFF1B5E20)
 val Amber = Color(0xFFFFB300)
 val Red = Color(0xFFE53935)
+val RedLight = Color(0xFFFFCDD2)
+val GreenLight = Color(0xFFD4EDDA)
 
 @Composable
 fun ItemCursoSlider(
@@ -40,6 +42,13 @@ fun ItemCursoSlider(
     nota: Float,
     onNotaChange: (Float) -> Unit
 ) {
+    val notaRedondeada = nota.roundToInt()
+    val aporte = notaRedondeada * (porcentaje / 100.0)
+
+
+    val badgeBg = if (notaRedondeada < 13) RedLight else GreenLight
+    val badgeTextColor = if (notaRedondeada < 13) Red else GreenDark
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -65,17 +74,24 @@ fun ItemCursoSlider(
                 )
             }
             Surface(
-                color = BadgeBgColor,
+                color = badgeBg,
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
-                    text = "${nota.roundToInt()}",
-                    color = DarkPurple,
+                    text = "$notaRedondeada",
+                    color = badgeTextColor,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 2.dp)
                 )
             }
         }
+
+        Text(
+            text = "Aporte: $notaRedondeada × $porcentaje% = ${String.format("%.2f", aporte)}",
+            style = MaterialTheme.typography.bodySmall,
+            color = TextSecondary,
+            modifier = Modifier.padding(top = 2.dp)
+        )
 
         Slider(
             value = nota,
@@ -90,6 +106,7 @@ fun ItemCursoSlider(
         )
     }
 }
+
 @Composable
 fun RegistroNotasScreen() {
     var nota1 by rememberSaveable { mutableFloatStateOf(0f) }
@@ -189,6 +206,25 @@ fun RegistroNotasScreen() {
                 shape = RoundedCornerShape(24.dp)
             ) {
                 Text("CALCULAR PROMEDIO", fontWeight = FontWeight.Bold)
+            }
+
+            OutlinedButton(
+                onClick = {
+                    nota1 = 0f
+                    nota2 = 0f
+                    nota3 = 0f
+                    nota4 = 0f
+                    redondear = false
+                    confirmado = false
+                    calculado = false
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp),
+                shape = RoundedCornerShape(24.dp),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = DarkPurple)
+            ) {
+                Text("LIMPIAR", fontWeight = FontWeight.Bold)
             }
 
             if (calculado) {
