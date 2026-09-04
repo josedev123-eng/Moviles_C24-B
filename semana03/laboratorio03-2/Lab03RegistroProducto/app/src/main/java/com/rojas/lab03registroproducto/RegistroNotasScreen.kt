@@ -173,7 +173,7 @@ fun RegistroNotasScreen() {
                 Switch(
                     checked = redondear,
                     onCheckedChange = { redondear = it },
-                    colors = SwitchDefaults.colors(checkedTrackColor = DarkPurple)
+                    colors = SwitchDefaults.colors(checkedTrackColor = DarkPurple, checkedThumbColor = Color.White)
                 )
             }
 
@@ -181,7 +181,7 @@ fun RegistroNotasScreen() {
                 Checkbox(
                     checked = confirmado,
                     onCheckedChange = { confirmado = it },
-                    colors = CheckboxDefaults.colors(checkedColor = DarkPurple)
+                    colors = CheckboxDefaults.colors(checkedColor = DarkPurple, checkmarkColor = Color.White)
                 )
                 Text("Confirmo que las notas son correctas", style = MaterialTheme.typography.bodyMedium)
             }
