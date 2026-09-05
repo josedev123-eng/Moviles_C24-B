@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -52,6 +53,7 @@ fun PantallaRegistro(modifier: Modifier = Modifier) {
     var precio by remember { mutableStateOf("") }
     var cantidad by remember { mutableStateOf("") }
     var mostrarResumen by remember { mutableStateOf(false) }
+    var mensajeError by remember { mutableStateOf("") }
 
     Column(
         modifier = modifier
@@ -96,13 +98,51 @@ fun PantallaRegistro(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
-            onClick = { mostrarResumen = true },
+            onClick = {
+                if (nombre.isBlank() || precio.isBlank() || cantidad.isBlank()) {
+                    mensajeError = "⚠️ Completa todos los campos antes de agregar."
+                    mostrarResumen = false
+                } else {
+                    mensajeError = ""
+                    mostrarResumen = true
+                }
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("AGREGAR PRODUCTO")
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Button(
+            onClick = {
+                nombre = ""
+                precio = ""
+                cantidad = ""
+                mostrarResumen = false
+                mensajeError = ""
+            },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+            )
+        ) {
+            Text("LIMPIAR")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if (mensajeError.isNotEmpty()) {
+            Text(
+                text = mensajeError,
+                color = Color.Red,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         if (mostrarResumen) {
             val precioNum = precio.toDoubleOrNull() ?: 0.0
@@ -132,6 +172,7 @@ fun PantallaRegistro(modifier: Modifier = Modifier) {
                     )
                 }
             }
+
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
