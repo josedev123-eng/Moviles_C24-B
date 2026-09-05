@@ -58,18 +58,18 @@ fun PantallaRegistro(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(24.dp)
     ) {
         Text(
             text = "Nuevo producto",
             style = MaterialTheme.typography.headlineSmall
         )
         Text(
-            text = "Completa los datos y presiona Agregar",
+            text = "Completa los datos del producto a guardar",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.outline
         )
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(18.dp))
 
         OutlinedTextField(
             value = nombre,
@@ -109,7 +109,7 @@ fun PantallaRegistro(modifier: Modifier = Modifier) {
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("AGREGAR PRODUCTO")
+            Text("Registrar Producto")
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -128,7 +128,7 @@ fun PantallaRegistro(modifier: Modifier = Modifier) {
                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer
             )
         ) {
-            Text("LIMPIAR")
+            Text("Limpiar")
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -157,10 +157,16 @@ fun PantallaRegistro(modifier: Modifier = Modifier) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
+                        text = "Resumen de la operación",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
                         text = nombre,
                         style = MaterialTheme.typography.titleLarge
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
                     Text("Precio: S/ ${String.format("%.2f", precioNum)}")
                     Text("Cantidad: $cantidadNum")
                     Spacer(modifier = Modifier.height(4.dp))
