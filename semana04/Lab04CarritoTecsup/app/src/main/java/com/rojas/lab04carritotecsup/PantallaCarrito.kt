@@ -1,6 +1,8 @@
 package com.rojas.lab04carritotecsup
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -11,6 +13,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun PantallaCarrito(modifier: Modifier = Modifier) {
     val productos = remember { mutableStateListOf<Producto>() }
+
     var nombre by remember { mutableStateOf("") }
     var precio by remember { mutableStateOf("") }
     var cantidad by remember { mutableStateOf("") }
@@ -29,7 +32,7 @@ fun PantallaCarrito(modifier: Modifier = Modifier) {
         OutlinedTextField(
             value = nombre,
             onValueChange = { nombre = it },
-            label = { Text("Nombre") },
+            label = { Text("Nombre del producto") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
@@ -41,7 +44,7 @@ fun PantallaCarrito(modifier: Modifier = Modifier) {
             OutlinedTextField(
                 value = precio,
                 onValueChange = { precio = it },
-                label = { Text("Precio") },
+                label = { Text("Precio (S/)") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.weight(1f),
                 singleLine = true
@@ -73,11 +76,17 @@ fun PantallaCarrito(modifier: Modifier = Modifier) {
             Text("AGREGAR")
         }
 
-        Divider(modifier = Modifier.padding(vertical = 8.dp))
+        Divider(modifier = Modifier.padding(vertical = 4.dp))
 
-        Text(
-            text = "Productos: ${productos.size}",
-            style = MaterialTheme.typography.titleLarge
-        )
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(productos) { producto ->
+                Text(text = "${producto.nombre} - S/ ${producto.precio} x ${producto.cantidad}")
+            }
+        }
     }
 }
