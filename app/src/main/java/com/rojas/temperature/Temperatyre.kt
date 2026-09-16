@@ -8,4 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun TemperatureDisplay() {}
+fun TemperatureDisplay() {
+    var temperatura by remember { mutableStateOf(20) }
+}
