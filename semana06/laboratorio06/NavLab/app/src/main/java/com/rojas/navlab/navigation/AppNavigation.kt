@@ -9,6 +9,7 @@ import androidx.navigation.navArgument
 import com.rojas.navlab.screens.DetailScreen
 import com.rojas.navlab.screens.HomeScreen
 import com.rojas.navlab.screens.ListScreen
+import com.rojas.navlab.screens.LoginScreen
 import com.rojas.navlab.screens.ProfileScreen
 
 @Composable
@@ -17,8 +18,11 @@ fun AppNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route
+        startDestination = Screen.Login.route
     ) {
+        composable(Screen.Login.route) {
+            LoginScreen(navController)
+        }
         composable(Screen.Home.route) {
             HomeScreen(navController)
         }
@@ -42,4 +46,3 @@ fun AppNavigation() {
         }
     }
 }
-
