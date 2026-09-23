@@ -29,7 +29,9 @@ fun DrawerContent(
         DrawerMenuItem("Perfil", "perfil_usuario")
     )
 
-    ModalDrawerSheet {
+    ModalDrawerSheet(
+        drawerContainerColor = Color.White
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -55,11 +57,12 @@ fun DrawerContent(
                 Text(
                     text = "José Rojas",
                     fontWeight = FontWeight.Bold,
+                    color = Color(0xFF1C1B1F),
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Text(
                     text = "Paciente",
-                    color = Color.Gray,
+                    color = Color(0xFF6B6B6B),
                     style = MaterialTheme.typography.bodySmall
                 )
             }
@@ -76,14 +79,14 @@ fun DrawerContent(
                     Icon(
                         imageVector = Icons.Outlined.RadioButtonUnchecked,
                         contentDescription = null,
-                        tint = if (selected) Color(0xFF5B2A86) else MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = if (selected) Color(0xFF5B2A86) else Color(0xFF1C1B1F)
                     )
                 },
                 label = {
                     Text(
                         text = opcion.label,
                         fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
-                        color = if (selected) Color(0xFF5B2A86) else Color.Unspecified
+                        color = if (selected) Color(0xFF5B2A86) else Color(0xFF1C1B1F)
                     )
                 },
                 selected = selected,
@@ -92,7 +95,9 @@ fun DrawerContent(
                     selectedContainerColor = Color(0xFFEDE7F6),
                     selectedIconColor = Color(0xFF5B2A86),
                     selectedTextColor = Color(0xFF5B2A86),
-                    unselectedContainerColor = Color.Transparent
+                    unselectedContainerColor = Color.Transparent,
+                    unselectedIconColor = Color(0xFF1C1B1F),
+                    unselectedTextColor = Color(0xFF1C1B1F)
                 ),
                 modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
             )

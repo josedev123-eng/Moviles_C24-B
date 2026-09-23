@@ -6,7 +6,10 @@ data class Medico(
     val id: String,
     val nombre: String,
     val especialidad: String,
-    val calificacion: Double
+    val calificacion: Double,
+    val aniosExperiencia: Int = 0,
+    val resenas: Int = 0,
+    val descripcion: String = ""
 )
 
 data class Cita(
@@ -17,4 +20,3 @@ data class Cita(
     val hora: String,
     var estado: String = "Confirmada"
 )
-
