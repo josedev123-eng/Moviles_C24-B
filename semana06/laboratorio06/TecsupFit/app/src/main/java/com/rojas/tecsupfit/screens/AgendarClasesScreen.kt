@@ -23,12 +23,14 @@ fun AgendarClasesScreen(navController: NavController, claseId: Int) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .padding(16.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column {
             Text(
-                "← Detalle de clase",
+                text = "← Detalle de clase",
+                color = Color(0xFF1C1B1F),
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 modifier = Modifier.clickable { navController.popBackStack() }
@@ -46,14 +48,32 @@ fun AgendarClasesScreen(navController: NavController, claseId: Int) {
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-            Text(clase.titulo, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-            Text("${clase.horario} · ${clase.sala} · ${clase.duracion}", color = Color.Gray, fontSize = 13.sp)
+            Text(
+                text = clase.titulo,
+                color = Color(0xFF1C1B1F),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = "${clase.horario} · ${clase.sala} · ${clase.duracion}",
+                color = Color(0xFF6B6B6B),
+                fontSize = 13.sp
+            )
 
             Spacer(modifier = Modifier.height(12.dp))
-            Text(clase.descripcion, color = Color.DarkGray, fontSize = 14.sp)
+            Text(
+                text = clase.descripcion,
+                color = Color(0xFF1C1B1F),
+                fontSize = 14.sp
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
-            Text("${clase.cuposDisponibles} de ${clase.cuposTotales} cupos disponibles", color = Color.Gray, fontSize = 13.sp)
+            Text(
+                text = "${clase.cuposDisponibles} de ${clase.cuposTotales} cupos disponibles",
+                color = Color(0xFF6B6B6B),
+                fontSize = 13.sp
+            )
         }
 
         Button(

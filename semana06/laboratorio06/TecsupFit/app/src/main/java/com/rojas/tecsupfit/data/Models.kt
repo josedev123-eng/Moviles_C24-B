@@ -8,7 +8,8 @@ data class ClaseFit(
     val duracion: String,
     val descripcion: String,
     val cuposDisponibles: Int,
-    val cuposTotales: Int
+    val cuposTotales: Int,
+    val dia: String = "Hoy"
 )
 
 data class ReservaFit(

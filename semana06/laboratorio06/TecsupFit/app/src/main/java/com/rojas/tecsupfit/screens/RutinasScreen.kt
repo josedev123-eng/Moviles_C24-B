@@ -1,5 +1,6 @@
 package com.rojas.tecsupfit.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,8 +16,18 @@ import com.rojas.tecsupfit.data.LocalDataSource
 
 @Composable
 fun RutinasScreen() {
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        Text("Mis Rutinas", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(16.dp)
+    ) {
+        Text(
+            text = "Mis Rutinas",
+            color = Color(0xFF1C1B1F),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
         Spacer(modifier = Modifier.height(16.dp))
 
         LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -27,8 +38,18 @@ fun RutinasScreen() {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text(rutina.nombre, fontWeight = FontWeight.Bold)
-                        Text("${rutina.fecha} · ${rutina.detalles}", color = Color.Gray, fontSize = 12.sp)
+                        Text(
+                            text = rutina.nombre,
+                            color = Color(0xFF1C1B1F),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+                        )
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Text(
+                            text = "${rutina.fecha} · ${rutina.detalles}",
+                            color = Color(0xFF6B6B6B),
+                            fontSize = 12.sp
+                        )
                     }
                 }
             }

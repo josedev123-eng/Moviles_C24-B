@@ -19,11 +19,17 @@ fun PerfilUsuarioScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
-            Text("Mi perfil", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text(
+                text = "Mi perfil",
+                color = Color(0xFF1C1B1F),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
         }
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -38,8 +44,17 @@ fun PerfilUsuarioScreen() {
         }
 
         Spacer(modifier = Modifier.height(12.dp))
-        Text("Jose Rojas", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        Text("Plan Premium", color = Color.Gray, fontSize = 12.sp)
+        Text(
+            text = "Jose Rojas",
+            color = Color(0xFF1C1B1F),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = "Plan Premium",
+            color = Color(0xFF6B6B6B),
+            fontSize = 12.sp
+        )
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -53,8 +68,13 @@ fun PerfilUsuarioScreen() {
                 modifier = Modifier.weight(1f)
             ) {
                 Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("14", fontSize = 22.sp, fontWeight = FontWeight.Bold)
-                    Text("Clases", color = Color.Gray, fontSize = 12.sp)
+                    Text(
+                        text = "14",
+                        color = Color(0xFF1C1B1F),
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text("Clases", color = Color(0xFF6B6B6B), fontSize = 12.sp)
                 }
             }
             Card(
@@ -63,8 +83,13 @@ fun PerfilUsuarioScreen() {
                 modifier = Modifier.weight(1f)
             ) {
                 Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("3", fontSize = 22.sp, fontWeight = FontWeight.Bold)
-                    Text("Rachas", color = Color.Gray, fontSize = 12.sp)
+                    Text(
+                        text = "3",
+                        color = Color(0xFF1C1B1F),
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text("Rachas", color = Color(0xFF6B6B6B), fontSize = 12.sp)
                 }
             }
         }

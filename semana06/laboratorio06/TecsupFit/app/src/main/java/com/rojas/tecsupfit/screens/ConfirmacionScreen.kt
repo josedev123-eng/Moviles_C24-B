@@ -22,6 +22,7 @@ fun ConfirmacionScreen(navController: NavController, claseId: Int) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -36,10 +37,25 @@ fun ConfirmacionScreen(navController: NavController, claseId: Int) {
         }
 
         Spacer(modifier = Modifier.height(20.dp))
-        Text("¡Cupo reservado!", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        Text(
+            text = "¡Cupo reservado!",
+            color = Color(0xFF1C1B1F),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
         Spacer(modifier = Modifier.height(4.dp))
-        Text(clase.titulo, color = Color.Gray, fontSize = 14.sp)
-        Text("Hoy, ${clase.horario} · ${clase.sala}", color = Color.Gray, fontSize = 12.sp)
+        Text(
+            text = clase.titulo,
+            color = Color(0xFF1C1B1F),
+            fontWeight = FontWeight.Bold,
+            fontSize = 14.sp
+        )
+        Spacer(modifier = Modifier.height(2.dp))
+        Text(
+            text = "Hoy, ${clase.horario} · ${clase.sala}",
+            color = Color(0xFF6B6B6B),
+            fontSize = 12.sp
+        )
 
         Spacer(modifier = Modifier.height(32.dp))
         Button(
@@ -50,7 +66,7 @@ fun ConfirmacionScreen(navController: NavController, claseId: Int) {
                 .fillMaxWidth()
                 .height(48.dp)
         ) {
-            Text("Ver mis reservas", color = Color.Black)
+            Text("Ver mis reservas", color = Color(0xFF1C1B1F), fontWeight = FontWeight.Bold)
         }
     }
 }

@@ -22,8 +22,18 @@ fun MisClasesScreen() {
     val reservas = remember { mutableStateListOf<ReservaFit>().apply { addAll(LocalDataSource.misReservasIniciales) } }
     var reservaACancelar by remember { mutableStateOf<ReservaFit?>(null) }
 
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        Text("Mis clases", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(16.dp)
+    ) {
+        Text(
+            text = "Mis clases",
+            color = Color(0xFF1C1B1F),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
         Spacer(modifier = Modifier.height(16.dp))
 
         LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -43,8 +53,18 @@ fun MisClasesScreen() {
                                 .background(if (isConfirmada) VerdeTecsup else Color.Transparent)
                         )
                         Column(modifier = Modifier.padding(16.dp)) {
-                            Text(reserva.tituloClase, fontWeight = FontWeight.Bold)
-                            Text(reserva.horario, color = Color.Gray, fontSize = 12.sp)
+                            Text(
+                                text = reserva.tituloClase,
+                                color = Color(0xFF1C1B1F),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp
+                            )
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = reserva.horario,
+                                color = Color(0xFF6B6B6B),
+                                fontSize = 12.sp
+                            )
                             Spacer(modifier = Modifier.height(8.dp))
 
                             Row(
@@ -60,7 +80,7 @@ fun MisClasesScreen() {
                                         text = reserva.estado,
                                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
                                         fontSize = 12.sp,
-                                        color = if (isConfirmada) VerdeTecsup else Color.Gray
+                                        color = if (isConfirmada) VerdeTecsup else Color(0xFF6B6B6B)
                                     )
                                 }
 
@@ -80,8 +100,8 @@ fun MisClasesScreen() {
     reservaACancelar?.let { reserva ->
         AlertDialog(
             onDismissRequest = { reservaACancelar = null },
-            title = { Text("Cancelar reserva") },
-            text = { Text("¿Deseas cancelar tu reserva para '${reserva.tituloClase}'?") },
+            title = { Text("Cancelar reserva", color = Color(0xFF1C1B1F), fontWeight = FontWeight.Bold) },
+            text = { Text("¿Deseas cancelar tu reserva para '${reserva.tituloClase}'?", color = Color(0xFF1C1B1F)) },
             confirmButton = {
                 TextButton(onClick = {
                     val index = reservas.indexOfFirst { it.id == reserva.id }
@@ -94,7 +114,7 @@ fun MisClasesScreen() {
                 }
             },
             dismissButton = {
-                TextButton(onClick = { reservaACancelar = null }) { Text("Volver") }
+                TextButton(onClick = { reservaACancelar = null }) { Text("Volver", color = Color(0xFF1C1B1F)) }
             }
         )
     }
