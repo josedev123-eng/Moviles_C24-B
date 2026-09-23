@@ -17,7 +17,7 @@ import com.rojas.tecsupfit.data.LocalDataSource
 import com.rojas.tecsupfit.ui.theme.VerdeTecsup
 
 @Composable
-fun AgendarCitaScreen(navController: NavController, claseId: Int) {
+fun AgendarClasesScreen(navController: NavController, claseId: Int) {
     val clase = LocalDataSource.listaClases.find { it.id == claseId } ?: LocalDataSource.listaClases[0]
 
     Column(
