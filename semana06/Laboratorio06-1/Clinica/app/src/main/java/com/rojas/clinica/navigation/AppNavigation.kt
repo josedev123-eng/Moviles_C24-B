@@ -92,7 +92,13 @@ fun AppNavigation() {
             composable("mis_citas") {
                 MisCitasScreen(
                     citas = listaCitas,
-                    onOpenDrawer = { scope.launch { drawerState.open() } }
+                    onOpenDrawer = { scope.launch { drawerState.open() } },
+                    onCancelar = { cita ->
+                        val index = listaCitas.indexOfFirst { it.id == cita.id }
+                        if (index != -1) {
+                            listaCitas[index] = listaCitas[index].copy(estado = "Cancelada")
+                        }
+                    }
                 )
             }
 
