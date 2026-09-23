@@ -32,10 +32,10 @@ fun AppNavigation() {
     val showBottomBar = currentRoute in listOf("inicio", "mis_citas", "historial", "perfil_usuario")
 
     val listaReservas = remember { mutableStateListOf<ReservaFit>().apply { addAll(LocalDataSource.misReservasIniciales) } }
-    val onCancelar: (ReservaFit) -> Unit = { reserva ->
-        val index = listaReservas.indexOfFirst { it.id == reserva.id }
+    val onCancelar: (ReservaFit) -> Unit = { reservaModificada ->
+        val index = listaReservas.indexOfFirst { it.id == reservaModificada.id }
         if (index != -1) {
-            listaReservas[index] = reserva.copy(estado = "Cancelada")
+            listaReservas[index] = reservaModificada
         }
     }
 
@@ -93,7 +93,7 @@ fun AppNavigation() {
             composable("inicio") { InicioScreen(navController) }
             composable("mis_citas") { MisClasesScreen(reservas = listaReservas, onCancelar = onCancelar) }
             composable("historial") { RutinasScreen() }
-            composable("perfil_usuario") { PerfilUsuarioScreen() }
+            composable("perfil_usuario") { PerfilUsuarioScreen(reservas = listaReservas) }
 
             composable(
                 "agendar_cita/{claseId}",
