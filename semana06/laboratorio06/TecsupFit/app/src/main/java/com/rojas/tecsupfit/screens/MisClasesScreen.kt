@@ -13,13 +13,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.rojas.tecsupfit.data.LocalDataSource
 import com.rojas.tecsupfit.data.ReservaFit
 import com.rojas.tecsupfit.ui.theme.VerdeTecsup
 
 @Composable
-fun MisClasesScreen() {
-    val reservas = remember { mutableStateListOf<ReservaFit>().apply { addAll(LocalDataSource.misReservasIniciales) } }
+fun MisClasesScreen(reservas: List<ReservaFit>, onCancelar: (ReservaFit) -> Unit) {
     var reservaACancelar by remember { mutableStateOf<ReservaFit?>(null) }
 
     Column(
@@ -104,10 +102,7 @@ fun MisClasesScreen() {
             text = { Text("¿Deseas cancelar tu reserva para '${reserva.tituloClase}'?", color = Color(0xFF1C1B1F)) },
             confirmButton = {
                 TextButton(onClick = {
-                    val index = reservas.indexOfFirst { it.id == reserva.id }
-                    if (index != -1) {
-                        reservas[index] = reserva.copy(estado = "Cancelada")
-                    }
+                    onCancelar(reserva)
                     reservaACancelar = null
                 }) {
                     Text("Sí, cancelar", color = Color.Red)

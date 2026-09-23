@@ -8,6 +8,8 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -15,6 +17,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
+import com.rojas.tecsupfit.data.LocalDataSource
+import com.rojas.tecsupfit.data.ReservaFit
 import com.rojas.tecsupfit.screens.*
 
 val VerdeTecsup = Color(0xFF0D634C)
@@ -26,6 +30,14 @@ fun AppNavigation() {
     val navController = rememberNavController()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
     val showBottomBar = currentRoute in listOf("inicio", "mis_citas", "historial", "perfil_usuario")
+
+    val listaReservas = remember { mutableStateListOf<ReservaFit>().apply { addAll(LocalDataSource.misReservasIniciales) } }
+    val onCancelar: (ReservaFit) -> Unit = { reserva ->
+        val index = listaReservas.indexOfFirst { it.id == reserva.id }
+        if (index != -1) {
+            listaReservas[index] = reserva.copy(estado = "Cancelada")
+        }
+    }
 
     Scaffold(
         containerColor = Color.White,
@@ -79,7 +91,7 @@ fun AppNavigation() {
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("inicio") { InicioScreen(navController) }
-            composable("mis_citas") { MisClasesScreen() }
+            composable("mis_citas") { MisClasesScreen(reservas = listaReservas, onCancelar = onCancelar) }
             composable("historial") { RutinasScreen() }
             composable("perfil_usuario") { PerfilUsuarioScreen() }
 
@@ -88,15 +100,19 @@ fun AppNavigation() {
                 arguments = listOf(navArgument("claseId") { type = NavType.IntType })
             ) { backStack ->
                 val id = backStack.arguments?.getInt("claseId") ?: 1
-                AgendarClasesScreen(navController, id)
+                AgendarClasesScreen(navController, id, listaReservas)
             }
 
             composable(
-                "confirmacion/{claseId}",
-                arguments = listOf(navArgument("claseId") { type = NavType.IntType })
+                "confirmacion/{claseId}/{horario}",
+                arguments = listOf(
+                    navArgument("claseId") { type = NavType.IntType },
+                    navArgument("horario") { type = NavType.StringType }
+                )
             ) { backStack ->
                 val id = backStack.arguments?.getInt("claseId") ?: 1
-                ConfirmacionScreen(navController, id)
+                val horario = backStack.arguments?.getString("horario") ?: ""
+                ConfirmacionScreen(navController, id, horario)
             }
         }
     }
