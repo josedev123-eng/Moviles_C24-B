@@ -8,6 +8,8 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.rojas.clinica.data.Cita
 
@@ -20,10 +22,20 @@ fun MisCitasScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Mis citas") },
+                title = {
+                    Text(
+                        text = "Mis citas",
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF1C1B1F)
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onOpenDrawer) {
-                        Icon(Icons.Default.Menu, contentDescription = "Menú")
+                        Icon(
+                            imageVector = Icons.Default.Menu,
+                            contentDescription = "Menú",
+                            tint = Color(0xFF1C1B1F)
+                        )
                     }
                 }
             )

@@ -17,16 +17,21 @@ fun AppNavigation() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val rutaActual = navBackStackEntry?.destination?.route
+
     val listaCitas = remember { mutableStateListOf(*LocalDataSource.citasIniciales.toTypedArray()) }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             DrawerContent(
+                rutaActual = rutaActual,
                 onNavigate = { ruta ->
                     scope.launch { drawerState.close() }
                     navController.navigate(ruta) {
                         popUpTo("inicio") { if (ruta == "inicio") inclusive = true }
+                        launchSingleTop = true
                     }
                 }
             )
@@ -93,6 +98,10 @@ fun AppNavigation() {
 
             composable("historial") {
                 HistorialMedicoScreen(onOpenDrawer = { scope.launch { drawerState.open() } })
+            }
+
+            composable("perfil_usuario") {
+                PerfilUsuarioScreen(onOpenDrawer = { scope.launch { drawerState.open() } })
             }
         }
     }
