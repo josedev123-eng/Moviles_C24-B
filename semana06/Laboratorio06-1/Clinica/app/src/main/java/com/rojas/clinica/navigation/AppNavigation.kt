@@ -7,7 +7,7 @@ import androidx.navigation.compose.*
 import androidx.navigation.navArgument
 import com.rojas.clinica.data.Cita
 import com.rojas.clinica.data.LocalDataSource
-import com.rojas.clinica.components.DrawerContent
+import com.rojas.clinica.componets.DrawerContent
 import com.rojas.clinica.screens.*
 import kotlinx.coroutines.launch
 
