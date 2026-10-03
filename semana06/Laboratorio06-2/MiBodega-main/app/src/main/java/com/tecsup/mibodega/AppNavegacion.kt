@@ -1,5 +1,7 @@
 package com.tecsup.mibodega
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Home
@@ -10,9 +12,13 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.tecsup.mibodega.ui.theme.VerdeBodega
 
 /**
@@ -22,47 +28,84 @@ import com.tecsup.mibodega.ui.theme.VerdeBodega
  */
 @Composable
 fun AppNavegacion() {
+    // TODO 1: Crear el NavController
     val navController = rememberNavController()
-    val irAInicio: () -> Unit = { navController.navigate(Rutas.INICIO) { launchSingleTop = true } }
-    val irAlCarrito: () -> Unit = { navController.navigate(Rutas.CARRITO) { launchSingleTop = true } }
-    val salir: () -> Unit = { navController.navigate(Rutas.LOGIN) }
 
+    // TODO 3: Crear el NavHost con startDestination y las rutas
     NavHost(
         navController = navController,
         startDestination = Rutas.LOGIN
     ) {
         composable(Rutas.LOGIN) {
-            PantallaLogin(
-                onIngresar = { navController.navigate(Rutas.INICIO) },
-                onCrearCuenta = { navController.navigate(Rutas.CREAR_CUENTA) }
-            )
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Login")
+            }
         }
 
         composable(Rutas.CREAR_CUENTA) {
-            PantallaCrearCuenta(
-                onVolver = { navController.popBackStack() },
-                onCuentaCreada = { navController.navigate(Rutas.INICIO) }
-            )
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Crear Cuenta")
+            }
         }
 
         composable(Rutas.INICIO) {
-            PantallaInicio(
-                onIrCarrito = irAlCarrito,
-                onSalir = salir
-            )
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Inicio")
+            }
         }
 
-        composable(Rutas.DETALLE) { Text("Detalle") }
+        composable(
+            route = Rutas.DETALLE,
+            arguments = listOf(
+                navArgument("productoId") {
+                    type = NavType.IntType
+                }
+            )
+        ) { backStackEntry ->
+            val productoId = backStackEntry.arguments?.getInt("productoId") ?: 0
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Detalle: $productoId")
+            }
+        }
 
         composable(Rutas.CARRITO) {
-            PantallaCarrito(
-                onIrInicio = irAInicio,
-                onSalir = salir
-            )
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Carrito")
+            }
         }
 
-        composable(Rutas.DATOS_ENTREGA) { Text("Datos de entrega") }
-        composable(Rutas.CONFIRMACION) { Text("Confirmación") }
+        composable(Rutas.DATOS_ENTREGA) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Datos de Entrega")
+            }
+        }
+
+        composable(Rutas.CONFIRMACION) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Confirmación")
+            }
+        }
     }
 }
 
