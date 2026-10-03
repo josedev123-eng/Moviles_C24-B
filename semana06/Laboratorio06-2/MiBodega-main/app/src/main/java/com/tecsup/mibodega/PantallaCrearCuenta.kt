@@ -58,7 +58,6 @@ fun PantallaCrearCuenta(
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 24.dp)
     ) {
-        // Encabezado con botón de volver
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(top = 8.dp)

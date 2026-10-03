@@ -33,7 +33,7 @@ fun AppNavegacion() {
             )
         }
 
-        composable(Rutas.INICIO) { Text("Inicio") }
+        composable(Rutas.INICIO) { PantallaInicio() }
         composable(Rutas.DETALLE) { Text("Detalle") }
         composable(Rutas.CARRITO) { Text("Carrito") }
         composable(Rutas.DATOS_ENTREGA) { Text("Datos de entrega") }
