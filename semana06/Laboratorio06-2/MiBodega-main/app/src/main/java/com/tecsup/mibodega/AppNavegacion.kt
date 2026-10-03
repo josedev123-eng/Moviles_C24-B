@@ -6,6 +6,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
+/**
+ * "Director" de la app cliente:
+ * - Tiene el NavHost con todas las pantallas.
+ * Ninguna pantalla navega sola: todas reciben lambdas desde aquí.
+ */
 @Composable
 fun AppNavegacion() {
     val navController = rememberNavController()
@@ -14,8 +19,20 @@ fun AppNavegacion() {
         navController = navController,
         startDestination = Rutas.LOGIN
     ) {
-        composable(Rutas.LOGIN) { Text("Login") }
-        composable(Rutas.CREAR_CUENTA) { Text("Crear cuenta") }
+        composable(Rutas.LOGIN) {
+            PantallaLogin(
+                onIngresar = { navController.navigate(Rutas.INICIO) },
+                onCrearCuenta = { navController.navigate(Rutas.CREAR_CUENTA) }
+            )
+        }
+
+        composable(Rutas.CREAR_CUENTA) {
+            PantallaCrearCuenta(
+                onVolver = { navController.popBackStack() },
+                onCuentaCreada = { navController.navigate(Rutas.INICIO) }
+            )
+        }
+
         composable(Rutas.INICIO) { Text("Inicio") }
         composable(Rutas.DETALLE) { Text("Detalle") }
         composable(Rutas.CARRITO) { Text("Carrito") }
