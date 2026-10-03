@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -20,6 +21,8 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingBasket
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -41,7 +44,7 @@ import com.tecsup.mibodega.ui.theme.VerdeBodega
 
 /**
  * Pantalla 3: Inicio / Productos.
- * Tiene el campo de búsqueda y la lista de productos.
+ * Tiene el campo de búsqueda, el LazyRow de categorías y la lista de productos.
  */
 @Composable
 fun PantallaInicio(
@@ -49,6 +52,13 @@ fun PantallaInicio(
     onSalir: () -> Unit
 ) {
     var textoBusqueda by remember { mutableStateOf("") }
+    var categoriaSeleccionada by remember { mutableStateOf("Todos") }
+
+    val productosFiltrados = if (categoriaSeleccionada == "Todos") {
+        listaProductos
+    } else {
+        listaProductos.filter { it.categoria == categoriaSeleccionada }
+    }
 
     Scaffold(
         bottomBar = {
@@ -66,6 +76,7 @@ fun PantallaInicio(
                 .padding(paddingInterno)
                 .padding(horizontal = 16.dp)
         ) {
+            // Encabezado
             Text(
                 text = "Mi Bodega",
                 fontSize = 26.sp,
@@ -74,6 +85,7 @@ fun PantallaInicio(
                 modifier = Modifier.padding(top = 16.dp)
             )
             Text(text = "¿Qué necesitas hoy?", color = GrisTexto)
+
 
             OutlinedTextField(
                 value = textoBusqueda,
@@ -84,62 +96,5 @@ fun PantallaInicio(
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 12.dp)
             )
-
-            Text(
-                text = "Productos",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(vertical = 12.dp)
-            )
-
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-                contentPadding = PaddingValues(bottom = 16.dp),
-                modifier = Modifier.fillMaxSize()
-            ) {
-                items(listaProductos) { producto ->
-                    TarjetaProducto(producto = producto)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun TarjetaProducto(
-    producto: Producto
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(containerColor = GrisClaro)
-    ) {
-        Row(
-            modifier = Modifier.padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(56.dp)
-                    .background(Color.White, RoundedCornerShape(10.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(Icons.Default.ShoppingBasket, contentDescription = null, tint = VerdeBodega)
-            }
-
-            Spacer(modifier = Modifier.width(12.dp))
-
-            Column(modifier = Modifier.weight(1f)) {
-                Text(producto.nombre, fontWeight = FontWeight.SemiBold)
-                Text(producto.categoria, fontSize = 12.sp, color = GrisTexto)
-                Text(
-                    text = "S/ %.2f".format(producto.precio),
-                    fontWeight = FontWeight.Bold,
-                    color = VerdeBodega
-                )
-            }
-        }
-    }
-}
+        }}}
