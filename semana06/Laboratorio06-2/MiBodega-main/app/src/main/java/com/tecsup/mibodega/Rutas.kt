@@ -1,18 +1,15 @@
 package com.tecsup.mibodega
 
-/**
- * Objeto que centraliza las rutas de navegación de la aplicación.
- */
+// Rutas de navegación de la app
 object Rutas {
-    // TODO: Definir las constantes para las rutas de la app:
-    // TODO: LOGIN -> "login"
-    // TODO: CREAR_CUENTA -> "crear_cuenta"
-    // TODO: INICIO -> "inicio"
-    // TODO: DETALLE -> "detalle/{productoId}"
-    // TODO: CARRITO -> "carrito"
-    // TODO: DATOS_ENTREGA -> "datos_entrega"
-    // TODO: CONFIRMACION -> "confirmacion"
+    const val LOGIN = "login"
+    const val CREAR_CUENTA = "crear_cuenta"
+    const val INICIO = "inicio"
+    const val DETALLE = "detalle/{productoId}"
+    const val CARRITO = "carrito"
+    const val DATOS_ENTREGA = "datos_entrega"
+    const val CONFIRMACION = "confirmacion"
 
-    // TODO: Crear la función helper para construir la ruta de detalle con el ID del producto:
-    // fun detalle(productoId: Int): String = "detalle/$productoId"
+    // Arma la ruta del detalle con el id del producto
+    fun detalle(productoId: Int) = "detalle/$productoId"
 }
