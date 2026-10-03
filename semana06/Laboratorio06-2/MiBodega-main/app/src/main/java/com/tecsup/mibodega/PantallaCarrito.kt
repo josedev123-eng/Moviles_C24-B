@@ -1,29 +1,57 @@
 package com.tecsup.mibodega
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.tecsup.mibodega.ui.theme.GrisTexto
 
-/** Pantalla 5: Carrito de Compras.
- * Muestra los productos agregados, permite modificar cantidades, calcula el total y el costo de delivery.
+/**
+ * Pantalla 5: Mi carrito.
+ * Por ahora solo muestra la barra inferior; los productos se agregan después.
  */
 @Composable
-fun PantallaCarrito() {
-    // TODO: Definir los parámetros que debe recibir la función (State Hoisting):
-    // - itemsCarrito: List<ItemCarrito> (Lista de ítems en el carrito)
-    // - onIncrementarCantidad: (Int) -> Unit (Aumentar cantidad de un ítem)
-    // - onDecrementarCantidad: (Int) -> Unit (Disminuir cantidad de un ítem)
-    // - onEliminarItem: (Int) -> Unit (Eliminar ítem del carrito)
-    // - onContinuarPedido: () -> Unit (Acción para avanzar a la pantalla de datos de entrega)
-    // - onVolver: () -> Unit (Acción para regresar)
-
-    // TODO: Realizar cálculos reactivos (sin guardar en estado mutable innecesario):
-    // - subtotal = suma del precio * cantidad de cada ítem
-    // - delivery = 4.00 (monto fijo de envío en S/)
-    // - total = subtotal + delivery
-
-    // TODO: Diseñar la interfaz de usuario con Jetpack Compose:
-    // - TopAppBar con título "Mi Carrito" y botón volver
-    // - Condicional: si el carrito está vacío, mostrar un mensaje "Tu carrito está vacío"
-    // - LazyColumn con la lista de productos (Card para cada ítem con controles para sumar, restar y eliminar)
-    // - Card de resumen con el cálculo reactivo: Subtotal, Delivery (S/ 4.00) y Total
-    // - Botón "Continuar pedido" que navegue a Datos de Entrega
+fun PantallaCarrito(
+    onIrInicio: () -> Unit,
+    onSalir: () -> Unit
+) {
+    Scaffold(
+        bottomBar = {
+            BarraInferior(
+                seleccionado = Rutas.CARRITO,
+                onInicio = onIrInicio,
+                onCarrito = { },
+                onSalir = onSalir
+            )
+        }
+    ) { paddingInterno ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingInterno),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.ShoppingCart,
+                contentDescription = null,
+                tint = GrisTexto,
+                modifier = Modifier.size(72.dp)
+            )
+            Text("Mi carrito", fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text("Aún no hay productos", color = GrisTexto)
+        }
+    }
 }
